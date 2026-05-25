@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRISPR-Cas9 | Edición Genética Interactiva</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Quicksand -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            background-color: #fac5fa; /* Gris azulado muy claro, casi blanco */
+            color: #334155; /* Gris pizarra oscuro para buen contraste */
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float { animation: float 4s ease-in-out infinite; }
+        
+        /* Colores Pastel Vibrantes para Interacción */
+        .bg-pastel-pink-active { background-color: #fbcfe8; border-color: #f472b6; color: #be185d; } /* Rosa más vivo */
+        .bg-pastel-purple-active { background-color: #e9d5ff; border-color: #c084fc; color: #7e22ce; } /* Morado más vivo */
+        .bg-pastel-green-active { background-color: #bbf7d0; border-color: #4ade80; color: #15803d; } /* Verde más vivo */
+        .bg-pastel-blue-active { background-color: #bae6fd; border-color: #38bdf8; color: #0369a1; } /* Azul más vivo */
+        
+        /* Estilos inactivos (más sutiles pero visibles) */
+        .bg-pastel-inactive { background-color: #ffffff; border-color: #bf00c5; color: #64748b; }
+
+        .text-gradient {
+            background: linear-gradient(to right, #db2777, #9333ea, #16a34a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.08);
+        }
+    </style>
+</head>
+<body class="min-h-screen overflow-x-hidden relative selection:bg-pink-200">
+
+    <!-- BACKGROUND BLOBS (Sutiles para no distraer) -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute w-[500px] h-[500px] bg-pink-200/30 blur-[100px] rounded-full top-[-10%] left-[-10%]"></div>
+        <div class="absolute w-[600px] h-[600px] bg-purple-200/30 blur-[100px] rounded-full bottom-[-10%] right-[-10%]"></div>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 text-center pt-20">
+        <div class="mb-10 animate-float">
+            <span class="text-8xl md:text-9xl filter drop-shadow-md">🧬</span>
+        </div>
+        
+        <h1 class="text-5xl md:text-8xl font-bold tracking-tight mb-6">
+            <span class="text-gradient">CRISPR-Cas9</span>
+        </h1>
+
+        <p class="mt-4 text-xl md:text-2xl text-slate-600 max-w-3xl leading-relaxed mx-auto font-medium">
+            La tijera molecular que edita la vida con precisión y esperanza.
+        </p>
+
+        <div class="mt-12 flex flex-wrap justify-center gap-4">
+            <div class="px-6 py-3 rounded-full bg-white border-2 border-pink-200 shadow-sm hover:border-pink-400 hover:shadow-md transition-all duration-300 cursor-default text-pink-600 font-bold">
+                🧭 ARN Guía
+            </div>
+            <div class="px-6 py-3 rounded-full bg-white border-2 border-purple-200 shadow-sm hover:border-purple-400 hover:shadow-md transition-all duration-300 cursor-default text-purple-600 font-bold">
+                ✂️ Cas9
+            </div>
+            <div class="px-6 py-3 rounded-full bg-white border-2 border-green-200 shadow-sm hover:border-green-400 hover:shadow-md transition-all duration-300 cursor-default text-green-600 font-bold">
+                🌱 Edición
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE SIMULATOR -->
+    <section class="relative z-10 px-4 sm:px-6 py-24">
+        <div class="max-w-7xl mx-auto glass-card rounded-[2.5rem] p-6 sm:p-12">
+            <div class="flex flex-col lg:flex-row gap-12 items-center">
+                
+                <!-- Controls -->
+                <div class="flex-1 w-full">
+                    <h2 class="text-3xl sm:text-5xl font-bold mb-4 text-slate-700">Simulador Interactivo</h2>
+                    <p class="text-slate-500 text-lg mb-10">Explora cada etapa del proceso de edición genética.</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" id="step-buttons">
+                        <!-- JS generará los botones aquí -->
+                    </div>
+                </div>
+
+                <!-- Display Screen -->
+                <div class="flex-1 w-full">
+                    <div class="rounded-[2.5rem] bg-white border-2 border-slate-100 min-h-[450px] flex flex-col items-center justify-center p-8 relative overflow-hidden shadow-inner">
+                        <!-- Decoración de fondo suave -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-pink-50 via-purple-50 to-green-50 opacity-60"></div>
+
+                        <div class="relative z-10 text-center transition-all duration-500" id="display-content">
+                            <div class="text-[6rem] sm:text-[8rem] mb-8 filter drop-shadow-md" id="display-emoji"></div>
+                            
+                            <div class="w-full max-w-md h-3 rounded-full bg-slate-200 overflow-hidden mb-8 mx-auto">
+                                <div id="progress-bar" class="h-full bg-gradient-to-r from-pink-400 via-purple-400 to-green-400 transition-all duration-500 ease-out" style="width: 25%"></div>
+                            </div>
+
+                            <h3 class="text-2xl sm:text-3xl font-bold text-slate-700 mb-4" id="display-title">Buscar mutación</h3>
+                            <p class="text-slate-600 text-lg leading-relaxed max-w-md mx-auto font-medium" id="display-text">El ARN guía analiza el ADN buscando la secuencia específica complementaria.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- DNA EDITOR VISUAL -->
+    <section class="relative z-10 px-4 sm:px-6 py-24">
+        <div class="max-w-5xl mx-auto glass-card rounded-[2.5rem] p-8 sm:p-12 text-center">
+            <h2 class="text-3xl sm:text-5xl font-bold mb-6 text-slate-700">Editor Genético Visual</h2>
+            <p class="text-slate-500 text-lg mb-12">Observa cómo CRISPR identifica una base incorrecta y la reemplaza.</p>
+
+            <div class="rounded-[2.5rem] bg-white border-2 border-slate-100 p-8 sm:p-12 overflow-hidden relative shadow-sm">
+                
+                <!-- Estado Mutado -->
+                <div id="dna-mutated" class="transition-all duration-500 opacity-100 scale-100">
+                    <h3 class="text-sm uppercase tracking-widest text-pink-600 font-bold mb-4">Secuencia Mutada</h3>
+                    <div class="font-mono text-2xl sm:text-4xl flex flex-wrap justify-center gap-3 text-slate-600 mb-8">
+                        <span class="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">A</span>
+                        <span class="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">T</span>
+                        <span class="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">C</span>
+                        <span class="px-4 py-1 rounded-lg bg-pink-100 text-pink-700 border-2 border-pink-300 shadow-sm">G</span>
+                        <span class="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">T</span>
+                        <span class="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">A</span>
+                        <span class="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">C</span>
+                    </div>
+                </div>
+
+                <!-- Botón de Acción -->
+                <div class="my-8 relative z-20">
+                    <button onclick="toggleEdit()" id="edit-btn" class="px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 flex items-center gap-3 mx-auto bg-gradient-to-r from-pink-400 via-purple-400 to-green-400 text-white">
+                         Corregir Mutación
+                    </button>
+                </div>
+
+                <!-- Estado Corregido (Oculto inicialmente) -->
+                <div id="dna-fixed" class="hidden transition-all duration-500 opacity-0 scale-95 mt-8">
+                    <h3 class="text-sm uppercase tracking-widest text-green-600 font-bold mb-4">Secuencia Corregida</h3>
+                    <div class="font-mono text-2xl sm:text-4xl flex flex-wrap justify-center gap-3 text-slate-600">
+                        <span class="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">A</span>
+                        <span class="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">T</span>
+                        <span class="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">C</span>
+                        <span class="px-4 py-1 rounded-lg bg-green-100 text-green-700 border-2 border-green-300 shadow-sm animate-pulse">C</span>
+                        <span class="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">T</span>
+                        <span class="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">A</span>
+                        <span class="bg-slate-100 px-3 py-1 rounded-lg border border-slate-200">C</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="relative z-10 px-4 sm:px-6 py-24">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-4xl sm:text-6xl font-bold text-center mb-20 text-slate-700">Proceso Completo</h2>
+            <div class="space-y-10" id="timeline-container">
+                <!-- JS generará el timeline aquí -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="relative z-10 px-6 py-16 text-center border-t border-slate-200">
+        <h3 class="text-2xl font-bold text-slate-400 mb-4">CRISPR-Cas9</h3>
+        <p class="text-slate-500 max-w-2xl mx-auto leading-relaxed">Una revolución en la biotecnología moderna capaz de transformar la medicina genética.</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Datos del Simulador
+        const steps = [
+            { label: 'Buscar mutación', emoji: '🧭', text: 'El ARN guía analiza el ADN buscando la secuencia específica complementaria.', color: 'bg-pastel-pink-active' },
+            { label: 'Cortar ADN', emoji: '✂️', text: 'La enzima Cas9 realiza un corte de doble cadena en la región defectuosa.', color: 'bg-pastel-purple-active' },
+            { label: 'Reparar ADN', emoji: '🧬', text: 'La célula utiliza una plantilla sana (HDR) o une extremos (NHEJ) para reparar.', color: 'bg-pastel-green-active' },
+            { label: 'Resultado', emoji: '✅', text: 'El gen ha sido editado correctamente y la función celular se restaura.', color: 'bg-pastel-blue-active' }
+        ];
+
+        // Datos del Timeline
+        const phases = [
+            { number: '01', title: 'Diseño Molecular', emoji: '️✂️', details: ['Se diseña un ARN guía (sgRNA) específico.', 'Cas9 se ensambla con el ARN guía.', 'Objetivo: Secuencia PAM única.'] },
+            { number: '02', title: 'Entrega Celular', emoji: '🧫', details: ['Extracción de células del paciente.', 'Introducción mediante electroporación.', 'El complejo entra al núcleo.'] },
+            { number: '03', title: 'Edición Genética', emoji: '🧬', details: ['Cas9 desenrolla el ADN.', 'Si hay match, corta ambas hebras.', 'Se activa la reparación celular.'] },
+            { number: '04', title: 'Validación', emoji: '🔬', details: ['Secuenciación para confirmar.', 'Expansión de células corregidas.', 'Preparación para terapia.'] },
+            { number: '05', title: 'Terapia', emoji: '🩺', details: ['Trasplante de células editadas.', 'Integración funcional.', 'Recuperación de proteínas.'] }
+        ];
+
+        // Inicializar Simulador
+        const buttonsContainer = document.getElementById('step-buttons');
+        let activeStep = 0;
+
+        function renderButtons() {
+            buttonsContainer.innerHTML = '';
+            steps.forEach((step, index) => {
+                const btn = document.createElement('button');
+                // Estilos condicionales: Si está activo, usa el color vibrante. Si no, usa blanco con borde gris.
+                const activeClass = activeStep === index 
+                    ? `${step.color} shadow-md scale-105 border-2` 
+                    : 'bg-pastel-inactive border-2 hover:bg-slate-50';
+                
+                btn.className = `rounded-2xl p-6 text-left transition-all duration-300 group ${activeClass}`;
+                btn.onclick = () => setStep(index);
+                
+                btn.innerHTML = `
+                    <div class="text-4xl mb-3 transition-transform duration-300 ${activeStep === index ? 'scale-110' : 'group-hover:scale-110'}">${step.emoji}</div>
+                    <h3 class="font-bold text-xl">${step.label}</h3>
+                `;
+                buttonsContainer.appendChild(btn);
+            });
+        }
+
+        function setStep(index) {
+            activeStep = index;
+            renderButtons();
+            
+            // Actualizar Display con animación simple
+            const displayContent = document.getElementById('display-content');
+            displayContent.style.opacity = '0';
+            displayContent.style.transform = 'translateY(10px)';
+            
+            setTimeout(() => {
+                document.getElementById('display-emoji').innerText = steps[index].emoji;
+                document.getElementById('display-title').innerText = steps[index].label;
+                document.getElementById('display-text').innerText = steps[index].text;
+                document.getElementById('progress-bar').style.width = `${((index + 1) / steps.length) * 100}%`;
+                
+                displayContent.style.opacity = '1';
+                displayContent.style.transform = 'translateY(0)';
+            }, 200);
+        }
+
+        // Inicializar Timeline
+        const timelineContainer = document.getElementById('timeline-container');
+        phases.forEach(phase => {
+            const item = document.createElement('div');
+            item.className = 'rounded-[2.5rem] border-2 border-slate-100 bg-white p-8 hover:scale-[1.01] transition-all duration-500 shadow-sm hover:shadow-md';
+            item.innerHTML = `
+                <div class="grid lg:grid-cols-[120px_1fr] gap-8 items-center">
+                    <div class="text-center">
+                        <div class="text-6xl mb-4 animate-bounce" style="animation-duration: 3s;">${phase.emoji}</div>
+                        <div class="text-4xl font-bold text-slate-300">${phase.number}</div>
+                    </div>
+                    <div>
+                        <h3 class="text-3xl font-bold mb-6 text-slate-700">${phase.title}</h3>
+                        <div class="space-y-4">
+                            ${phase.details.map(d => `<div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-slate-600">${d}</div>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            timelineContainer.appendChild(item);
+        });
+
+        // Lógica del Editor de ADN
+        let isEditing = false;
+        function toggleEdit() {
+            isEditing = !isEditing;
+            const mutated = document.getElementById('dna-mutated');
+            const fixed = document.getElementById('dna-fixed');
+            const btn = document.getElementById('edit-btn');
+
+            if (isEditing) {
+                mutated.classList.remove('opacity-100', 'scale-100');
+                mutated.classList.add('opacity-30', 'scale-95', 'blur-sm');
+                
+                fixed.classList.remove('hidden');
+                setTimeout(() => {
+                    fixed.classList.remove('opacity-0', 'scale-95');
+                    fixed.classList.add('opacity-100', 'scale-100');
+                }, 50);
+
+                btn.innerHTML = '↺ Reiniciar Edición';
+                btn.classList.remove('from-pink-400', 'via-purple-400', 'to-green-400');
+                btn.classList.add('bg-slate-200', 'text-slate-600');
+            } else {
+                mutated.classList.remove('opacity-30', 'scale-95', 'blur-sm');
+                mutated.classList.add('opacity-100', 'scale-100');
+                
+                fixed.classList.remove('opacity-100', 'scale-100');
+                fixed.classList.add('opacity-0', 'scale-95');
+                
+                setTimeout(() => {
+                    fixed.classList.add('hidden');
+                }, 500);
+
+                btn.innerHTML = '✨ Corregir Mutación';
+                btn.classList.add('from-pink-400', 'via-purple-400', 'to-green-400');
+                btn.classList.remove('bg-slate-200', 'text-slate-600');
+            }
+        }
+
+        // Iniciar
+        renderButtons();
+    </script>
+</body>
+</html>
