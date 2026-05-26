@@ -188,14 +188,14 @@
         const steps = [
             { label: 'Buscar mutación', emoji: '🧭', text: 'El ARN guía analiza el ADN buscando la secuencia específica complementaria.', color: 'bg-pastel-pink-active' },
             { label: 'Cortar ADN', emoji: '✂️', text: 'La enzima Cas9 realiza un corte de doble cadena en la región defectuosa.', color: 'bg-pastel-purple-active' },
-            { label: 'Reparar ADN', emoji: '🧬', text: 'La célula utiliza una plantilla sana (HDR) o une extremos (NHEJ) para reparar.', color: 'bg-pastel-green-active' },
+            { label: 'Reparar ADN', emoji: '🧬', text: 'La célula utiliza una plantilla sana (HDR) o salta la parte del gen que contiene la mutacion (Salto de exón) .', color: 'bg-pastel-green-active' },
             { label: 'Resultado', emoji: '✅', text: 'El gen ha sido editado correctamente y la función celular se restaura.', color: 'bg-pastel-blue-active' }
         ];
 
         // Datos del Timeline
         const phases = [
-            { number: '01', title: 'Diseño Molecular', emoji: '️✂️', details: ['Se diseña un ARN guía (sgRNA) específico.', 'Cas9 se ensambla con el ARN guía.', 'Objetivo: Secuencia PAM única.'] },
-            { number: '02', title: 'Entrega Celular', emoji: '🧫', details: ['Extracción de células del paciente.', 'Introducción mediante electroporación.', 'El complejo entra al núcleo.'] },
+            { number: '01', title: 'Diseño Molecular', emoji: '️✂️', details: ['Se diseña un ARN guía (sgRNA) específico.', 'Cas9 se ensambla con el ARN guía.', 'Objetivo: Corregir las mutaciones en genes como COL7A1.'] },
+            { number: '02', title: 'Entrega Celular', emoji: '🧫', details: ['Extracción de células del paciente.', 'Introducción mediante electroporación o vectores.', 'El complejo entra al núcleo.'] },
             { number: '03', title: 'Edición Genética', emoji: '🧬', details: ['Cas9 desenrolla el ADN.', 'Si hay match, corta ambas hebras.', 'Se activa la reparación celular.'] },
             { number: '04', title: 'Validación', emoji: '🔬', details: ['Secuenciación para confirmar.', 'Expansión de células corregidas.', 'Preparación para terapia.'] },
             { number: '05', title: 'Terapia', emoji: '🩺', details: ['Trasplante de células editadas.', 'Integración funcional.', 'Recuperación de proteínas.'] }
